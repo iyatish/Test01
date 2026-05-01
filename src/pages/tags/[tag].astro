@@ -1,0 +1,67 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { formatDateShort } from '../../utils/date';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+
+  const tags = [...new Set(posts.flatMap(post => post.data.tags))];
+
+  return tags.map(tag => ({
+    params: { tag },
+    props: {
+      tag,
+      posts: posts
+        .filter(post => post.data.tags.includes(tag))
+        .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+    },
+  }));
+}
+
+const { tag, posts } = Astro.props;
+---
+<Base title={`#${tag}`} description={`Posts tagged "${tag}"`}>
+  <div class="page-header">
+    <div class="back-row">
+      <a href="/tags" class="back-link">← All tags</a>
+    </div>
+    <h1><span class="hash">#</span>{tag}</h1>
+    <p>{posts.length} post{posts.length !== 1 ? 's' : ''}</p>
+  </div>
+
+  <ul class="post-list">
+    {posts.map(post => (
+      <li class="post-item">
+        <div class="post-item-header">
+          <h2><a href={`/blog/${post.id}`}>{post.data.title}</a></h2>
+          <time class="post-date" datetime={post.data.pubDate.toISOString()}>
+            {formatDateShort(post.data.pubDate)}
+          </time>
+        </div>
+        {post.data.description && (
+          <p class="post-description">{post.data.description}</p>
+        )}
+      </li>
+    ))}
+  </ul>
+</Base>
+
+<style>
+  .back-row {
+    margin-bottom: 0.75rem;
+  }
+
+  .back-link {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .back-link:hover {
+    color: var(--accent);
+  }
+
+  .hash {
+    color: var(--accent);
+  }
+</style>

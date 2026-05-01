@@ -1,0 +1,62 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const { title, description = 'A personal blog.', ogImage } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const siteName = 'My Blog';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title} · {siteName}</title>
+    <meta name="description" content={description} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={`${title} · ${siteName}`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:type" content="website" />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="My Blog RSS Feed" href="/rss.xml" />
+
+    <!-- Performance hints -->
+    <link rel="preconnect" href="/" />
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/" class="nav-brand">{siteName}</a>
+        <ul class="nav-links">
+          <li><a href="/" aria-current={Astro.url.pathname === '/' ? 'page' : undefined}>Home</a></li>
+          <li><a href="/about" aria-current={Astro.url.pathname === '/about' ? 'page' : undefined}>About</a></li>
+          <li><a href="/tags" aria-current={Astro.url.pathname === '/tags' ? 'page' : undefined}>Tags</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="site-wrapper">
+      <slot />
+    </main>
+
+    <footer>
+      <p>© {new Date().getFullYear()} {siteName}. Built with <a href="https://astro.build">Astro</a>.</p>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+</style>
