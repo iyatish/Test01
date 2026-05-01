@@ -1,0 +1,40 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="About" description="A little about me and what I write about.">
+  <div class="page-header">
+    <h1>About</h1>
+  </div>
+
+  <div class="prose about-content">
+    <p>
+      Hi, I'm <strong>Your Name</strong>. I'm a software developer with a love for
+      clean code, interesting problems, and occasionally writing about them.
+    </p>
+
+    <p>
+      This blog is where I share what I'm learning, thinking about, and building.
+      Topics drift between backend systems, developer tooling, and whatever rabbit
+      hole I've fallen into recently.
+    </p>
+
+    <h2>What I write about</h2>
+    <ul>
+      <li><strong>Software development</strong> — patterns, architecture, tools</li>
+      <li><strong>Web technologies</strong> — mostly the backend, sometimes the frontend</li>
+      <li><strong>Productivity</strong> — workflows, systems, and how to think</li>
+    </ul>
+
+    <h2>Get in touch</h2>
+    <p>
+      You can find me on <a href="https://github.com" rel="noopener noreferrer">GitHub</a>.
+      For anything else, email me at <a href="mailto:hello@example.com">hello@example.com</a>.
+    </p>
+  </div>
+</Base>
+
+<style>
+  .about-content {
+    padding-bottom: 3rem;
+  }
+</style>

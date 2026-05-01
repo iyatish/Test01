@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { formatDateShort } from '../utils/date';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+<Base title="Home" description="A personal blog about software, ideas, and things I find interesting.">
+  <div class="page-header">
+    <h1>Writing</h1>
+    <p>Thoughts on software, ideas, and the occasional rabbit hole.</p>
+  </div>
+
+  {posts.length === 0 ? (
+    <p style="color: var(--text-muted);">No posts yet. Check back soon.</p>
+  ) : (
+    <ul class="post-list">
+      {posts.map(post => (
+        <li class="post-item">
+          <div class="post-item-header">
+            <h2><a href={`/blog/${post.id}`}>{post.data.title}</a></h2>
+            <time class="post-date" datetime={post.data.pubDate.toISOString()}>
+              {formatDateShort(post.data.pubDate)}
+            </time>
+          </div>
+          {post.data.description && (
+            <p class="post-description">{post.data.description}</p>
+          )}
+          {post.data.tags.length > 0 && (
+            <ul class="tag-list">
+              {post.data.tags.map(tag => (
+                <li><a href={`/tags/${tag}`} class="tag">{tag}</a></li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))}
+    </ul>
+  )}
+</Base>
