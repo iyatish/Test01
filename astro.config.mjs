@@ -4,7 +4,8 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   integrations: [sitemap()],
-  site: 'https://yourdomain.com',
+  site: 'https://iyatish.github.io',
+  base: '/Test01',
   markdown: {
     shikiConfig: {
       theme: 'github-dark',
